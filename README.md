@@ -3,6 +3,8 @@ Group Members:
     Roland Allaire
     Rocco Pearce
     Lucas Advent
+    Maggie Morgan
+
 
 
 
