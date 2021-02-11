@@ -13,3 +13,4 @@ Team Project: Design a discord bot
         A better interface: combining inventory with profile stats instead of having them both separate
         Add a party aspect: allowing players to communicate with one another
         Adding different weapon options
+        Classes: Parties can choose a specific class giving them unique abilities and proficincies
