@@ -1,11 +1,11 @@
 # CS3560-C--group-3
+C++ Group 3
+Morning Session
 Group Members:
     Roland Allaire
     Rocco Pearce
     Lucas Advent
     Maggie Morgan
-
-
 
 
 Team Project: Design a discord bot 
@@ -18,3 +18,14 @@ Team Project: Design a discord bot
                             allowing players to fight together
         Adding different weapon options / armor options
         Adding different classes that players choose: boosts certain stats based on chosen class
+Target Technology Platform:
+    Discord, an internet application that functions as a social networking platform
+    The target software design is a Discord Bot that responds to user commands
+
+Instructions:
+    Compilation:
+    Deploying:
+    Running:
+
+Github Repo link: 
+    https://github.com/roland199/CS3560-C--group-3.git
