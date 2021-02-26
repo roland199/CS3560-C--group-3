@@ -35,3 +35,6 @@ Client ID:
 
 Public Key: 
 ac25bc5a1994ec27c513ca2919831eacd0662f2842dc3eb9236a7545b89ace63
+
+Bot Token: 
+ODE0OTc2NzgzMDUyNTcwNjI0.YDlsRg.0DEkmTpALNeg0dSjoBREMkUjRHw
