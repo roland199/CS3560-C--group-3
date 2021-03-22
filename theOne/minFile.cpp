@@ -1,28 +1,4 @@
-//
-// minimal.cpp
-// ***********
-//
-// Copyright (c) 2020 Sharon Fox (sharon at xandium dot io)
-//
-// Distributed under the MIT License. (See accompanying file LICENSE)
-//
 
-#include <aegis.hpp>
-#include <nlohmann/json.hpp>
-
-
-
-using json = nlohmann::json;
-using aegis::rest::rest_reply;
-using aegis::gateway::objects::message;
-
-int main(int argc, char * argv[])
-{
-    using namespace std::chrono_literals;
-    try
-    {
-        // Create bot object
-        aegis::core bot(aegis::create_bot_t().log_level(spdlog::level::trace).token("ODE0OTc2NzgzMDUyNTcwNjI0.YDlsRg.nKl-U9mmpu3Bsdc9eDCrkwUwJKI"));
 
         // These callbacks are what the lib calls when messages come in
         bot.set_on_message_create([&](aegis::gateway::events::message_create obj)
