@@ -69,11 +69,14 @@
                     bool flee = false;
                     _channel.create_message("You may encounter dangerous mobs and/or find loot...");
                     srand(time(0));
-                    int num = rand() % 3 + 1;
+                    int num = rand() % 5 + 0;
                     switch (num) {
                     case 0:
-                        gold = rand() % 25 + 25;
-                        _channel.create_message(fmt::format("You found {} gold!", gold));
+                        gold = rand() % 20 + 50;
+                        health = rand() % 25 + 35;
+                        _channel.create_message(fmt::format("You defeated a cave troll! You plundered {} gold! \n", gold));
+                        _channel.create_message(fmt::format("you also lost {} health ", health));
+                        _channel.create_message(fmt::format("you acquired a giant club!"));
                         break;
                     case 1:
                         gold = rand() % 25 + 25;
@@ -94,6 +97,12 @@
                         break;
                     case 3:
                         _channel.create_message("You found a set of old armor!");
+                        break;
+                    case 4:
+                        gold = rand() % 20 + 12;
+                        health = rand() % 15 + 5;
+                        _channel.create_message(fmt::format("you were ambushed by bandits! You lost {} gold ", gold));
+                        _channel.create_message(fmt::format("You also lost {} health ", health));
                         break;
                     }
                 }
