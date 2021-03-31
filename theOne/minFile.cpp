@@ -72,14 +72,14 @@
                     int num = rand() % 5 + 0;
                     switch (num) {
                     case 0:
-                        gold = rand() % 20 + 50;
-                        health = rand() % 25 + 35;
+                        int gold = rand() % 20 + 50;
+                        int health = rand() % 25 + 35;
                         _channel.create_message(fmt::format("You defeated a cave troll! You plundered {} gold! \n", gold));
-                        _channel.create_message(fmt::format("you also lost {} health ", health));
+                        _channel.create_message(fmt::format("you also lost {} health \n", health));
                         _channel.create_message(fmt::format("you acquired a giant club!"));
                         break;
                     case 1:
-                        gold = rand() % 25 + 25;
+                        int gold = rand() % 25 + 25;
                         _channel.create_message(fmt::format("You found {} gold!", gold));
                         //_channel.create_message("You found encountered a poisonous spider. \n Do you wish to flee or kill?");
                         //std::string content{ obj.msg.get_content() };
@@ -92,18 +92,22 @@
                         //}
                         break;
                     case 2:
-                        health = rand() % 25 + 25;
+                        int health = rand() % 25 + 25;
                         _channel.create_message(fmt::format("You killed a giant spider! But you lost {} health :(", health));
                         break;
                     case 3:
                         _channel.create_message("You found a set of old armor!");
                         break;
                     case 4:
-                        gold = rand() % 20 + 12;
-                        health = rand() % 15 + 5;
-                        _channel.create_message(fmt::format("you were ambushed by bandits! You lost {} gold ", gold));
+                        int gold = rand() % 20 + 12;
+                        int health = rand() % 15 + 5;
+                        _channel.create_message(fmt::format("you were ambushed by bandits! You lost {} gold \n ", gold));
                         _channel.create_message(fmt::format("You also lost {} health ", health));
                         break;
+                    case 5:
+                    int gold = rand() % 25 + 50;
+                    string encounter = rand() % 3 + 1; 
+                        _channel.create_message(fmt::format("You stumbled on a small village! They wish for you to {}\n", encounter))
                     }
                 }
                 // Send a message, wait for message to successfully be sent, then react to that message
