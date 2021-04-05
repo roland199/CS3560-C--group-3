@@ -1,5 +1,45 @@
+ //
+// minimal.cpp
+// ***********
+//
+// Copyright (c) 2020 Sharon Fox (sharon at xandium dot io)
+//
+// Distributed under the MIT License. (See accompanying file LICENSE)
+//
 
-        // These callbacks are what the lib calls when messages come in
+#include <aegis.hpp>
+#include <nlohmann/json.hpp>
+
+// text file
+#include <string>
+#include <iostream>
+#include <fstream>
+
+
+
+using json = nlohmann::json;
+using aegis::rest::rest_reply;
+using aegis::gateway::objects::message;
+
+void replace(std::string username, std::string item, int num);
+
+int main(int argc, char * argv[])
+{
+    using namespace std::chrono_literals;
+    try
+    {
+        // Create bot object
+ 
+ 
+ 
+ 
+ ////////////////////////////////////////THIS IS THE BOT TOKEN LINE
+ 
+ 
+ 
+ 
+ 
+ // These callbacks are what the lib calls when messages come in
         bot.set_on_message_create([&](aegis::gateway::events::message_create obj)
         {
                 try
@@ -50,35 +90,48 @@
                         _channel.create_message(fmt::format("Hello {}, you must be new here, type 'bm start' to get started", username));
                         std::ofstream outfile;                                                  
                         outfile.open("testfile.txt", std::ofstream::out | std::ofstream::app);
-                        outfile << username << std::endl << "100" << std::endl << "0" << std::endl;
+                        outfile << username << std::endl << "1" << std::endl << "0" << std::endl << "100" << std::endl << "no" << std::endl << "no" << std::endl;
                         outfile.close();
-                    }
-                    else {
-                        if (content == "video")
+                    }else {
+                        std::string plevel = "";
+                        std::string pgold = "";
+                        std::string phealth = "";
+                        std::string psword = "";
+                        std::string parmor = "";
+                        bool find = 0;
+                        infile.open("testfile.txt");
+                        while (!infile.eof() && find != 1)                          // search for username
                         {
+                            std::string temp = "";
+                            getline(infile, temp);
+                            if (temp == user) {
+                                find = 1;
+                            }
+                        }
+                        //if (find == 1) {
 
-                            _channel.create_message("Hello back");
-                        }
-                        if (content == "~Hi")
+                        getline(infile, plevel);                   // getting profile info
+                        getline(infile, pgold);
+                        getline(infile, phealth);
+                        getline(infile, psword);
+                        getline(infile, parmor);
+
+                        //}
+                        infile.close();
+                            
+                        if (content == "test")                              // manipulating profile data
                         {
-                            _channel.create_message("Hello back");
+                            replace(username, "gold", 3333);
                         }
-                        else if (content == "~React")
-                        {
-                            obj.msg.create_reaction("success:429554838083207169").then([&, msg = obj.msg](aegis::rest::rest_reply reply) mutable
-                            {
-                                if (reply)
-                                {
-                                    // reaction was a success. chain another?
-                                    msg.create_reaction("fail:429554869611921408").then([&](aegis::rest::rest_reply reply)
-                                        {
-                                         if (reply)
-                                               _channel.create_message("React complete");
-                                         else
-                                                _channel.create_message("React failed");
-                                        });
-                                }
-                            });
+                        
+                        if (content == "bm profile") {
+                            
+                            _channel.create_message(fmt::format("{}'s profile:", user));
+                            _channel.create_message(fmt::format("   Level: {}", plevel));
+                            _channel.create_message(fmt::format("   Gold: {}", pgold));
+                            _channel.create_message(fmt::format("   Health: {}", phealth));
+                            _channel.create_message(fmt::format("   Sword? {}", psword));
+                            _channel.create_message(fmt::format("   Armor? {}", parmor));
                         }
                         if (content == "bm start") {
                             _channel.create_message("Hello, welcome to BaerMelk \n This is a freeroaming game where you can adventure to gather resources, fight mobs, and gain experience to defeat the main boss, BaerMelk.");
@@ -164,4 +217,54 @@
     std::cout << "Press any key to continue...\n";
     std::cin.ignore();
     return 0;
+}
+
+void replace(std::string username, std::string item, int num)
+{
+std::ifstream infile;
+std::ofstream outfile;
+infile.open("testfile.txt");
+outfile.open("temp.txt");
+int loopNum = 0;
+
+std::string line;
+
+if (item == "gold") {
+    loopNum = 1;
+}
+if (item == "level") {
+    loopNum = 0;
+}
+if (item == "health") {
+    loopNum = 2;
+}
+if (item == "sword") {
+    loopNum = 3;
+}
+if (item == "armor") {
+    loopNum = 4;
+}
+
+
+while (!infile.eof()) {
+
+    getline(infile, line);
+    if (line == username) {
+        outfile << line << std::endl;
+        for (int i = 0; i < loopNum; i++) {
+            getline(infile, line);
+            outfile << line << std::endl;
+        }
+        getline(infile, line);
+        outfile << num << std::endl;
+    }
+    else {
+        outfile << line << std::endl;
+    }
+}
+outfile.close();
+infile.close();
+remove("testfile.txt");
+rename("temp.txt", "testfile.txt");
+
 }
