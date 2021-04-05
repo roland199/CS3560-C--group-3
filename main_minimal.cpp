@@ -31,9 +31,10 @@ int main(int argc, char * argv[])
         // Create bot object
 
 
-        ////////////////////BOT TOKEN LINE
+        /////////////////////BOT TOKEN LINE
 
-        // These callbacks are what the lib calls when messages come in
+
+         // These callbacks are what the lib calls when messages come in
         bot.set_on_message_create([&](aegis::gateway::events::message_create obj)
         {
                 try
@@ -92,6 +93,10 @@ int main(int argc, char * argv[])
                         std::string phealth = "";
                         std::string psword = "";
                         std::string parmor = "";
+                        std::string pbow = "";
+                        std::string parrows = "";
+                        std::string phealthkit = "";
+                        std::string pbandages = "";
                         bool find = 0;
                         infile.open("testfile.txt");
                         while (!infile.eof() && find != 1)                          // search for username
@@ -102,14 +107,16 @@ int main(int argc, char * argv[])
                                 find = 1;
                             }
                         }
-                        //if (find == 1) {
-
                         getline(infile, plevel);                   // getting profile info
                         getline(infile, pgold);
                         getline(infile, phealth);
                         getline(infile, psword);
                         getline(infile, parmor);
-                        //}
+                        getline(infile, pbow);
+                        getline(infile, parrows);
+                        getline(infile, phealthkit);
+                        getline(infile, pbandages);
+                      
                         infile.close();
 
                         std::vector<aegis::gateway::objects::field> startFields;
@@ -129,7 +136,9 @@ int main(int argc, char * argv[])
                         start.fields(startFields);
 
                         std::vector<aegis::gateway::objects::field> cmdFields;                  //help vector
-                        aegis::gateway::objects::field cmdShop, cmdAdventure, cmdBuy, cmdSell;
+                        aegis::gateway::objects::field cmdShop, cmdAdventure, cmdBuy, cmdSell, cmdProfile;
+                        cmdProfile.name("'bm profile'");
+                        cmdProfile.value("Shows player profile and player inventory");
                         cmdShop.name("'bm shop'");
                         cmdShop.value("Shows all available items to purchase");
                         cmdAdventure.name("'bm adventure'");
@@ -138,7 +147,7 @@ int main(int argc, char * argv[])
                         cmdBuy.value("Purchase items in the shop");
                         cmdSell.name("'bm sell [item]'");
                         cmdSell.value("Sell items you own");
-                        cmdFields.push_back(cmdShop); cmdFields.push_back(cmdAdventure); cmdFields.push_back(cmdBuy); cmdFields.push_back(cmdSell);
+                        cmdFields.push_back(cmdProfile); cmdFields.push_back(cmdShop); cmdFields.push_back(cmdAdventure); cmdFields.push_back(cmdBuy); cmdFields.push_back(cmdSell); 
 
                         aegis::gateway::objects::embed help;
                         help.title("List of Commands");
@@ -173,25 +182,47 @@ int main(int argc, char * argv[])
                         shop.fields(itemFields);
 
                         std::vector<aegis::gateway::objects::field> stats;                  // Profile Vector
-                        aegis::gateway::objects::field level, gold, health, lword, lrmor;
+                        aegis::gateway::objects::field level, gold, health;
                         level.name("Level: ");
                         level.value(plevel);
+                        level.is_inline(true);
                         gold.name("Gold: ");
                         gold.value(pgold);
+                        gold.is_inline(true);
                         health.name("Health: ");
                         health.value(phealth);
-                        lword.name("Sword: ");
-                        lword.value(psword);
-                        lword.is_inline(false);
-                        lrmor.name("Armor: ");
-                        lrmor.value(parmor);
-                        lrmor.is_inline(false);
-                        stats.push_back(level);stats.push_back(gold);stats.push_back(health);stats.push_back(lword);stats.push_back(lrmor);
+                        health.is_inline(true);
+                        stats.push_back(level);stats.push_back(gold);stats.push_back(health);
 
-                        aegis::gateway::objects::embed profile;
+                        std::vector<aegis::gateway::objects::field> inventory;
+                        aegis::gateway::objects::field lsword, larmor, lbow, larrows, lhealthkit, lbandages;
+                        lsword.name("Sword: ");
+                        lsword.value(psword);
+                        lsword.is_inline(true);
+                        lbow.name("Bow: ");
+                        lbow.value(pbow);
+                        lbow.is_inline(true);
+                        larrows.name("Arrows: ");
+                        larrows.value(parrows);
+                        larrows.is_inline(true);
+                        larmor.name("Armor: ");
+                        larmor.value(parmor);
+                        larmor.is_inline(true);
+                        lhealthkit.name("Health Kit: ");
+                        lhealthkit.value(phealthkit);
+                        lhealthkit.is_inline(true);
+                        lbandages.name("Bandages: ");
+                        lbandages.value(pbandages);
+                        lbandages.is_inline(true);
+                        inventory.push_back(lsword);inventory.push_back(lbow);inventory.push_back(larrows);inventory.push_back(larmor);inventory.push_back(lhealthkit);inventory.push_back(lbandages);
+
+                        aegis::gateway::objects::embed profile, linventory;
                         profile.title("Profile");
                         profile.color(31);
                         profile.fields(stats);
+                        linventory.title("Inventory");
+                        linventory.color(31);
+                        linventory.fields(inventory);
 
 
 
@@ -202,6 +233,7 @@ int main(int argc, char * argv[])
                         
                         if (content == "bm profile") {
                             _channel.create_message_embed("", profile);
+                            _channel.create_message_embed("", linventory);
                         }
                         if (content == "bm start") {
                             _channel.create_message_embed("", start);
@@ -314,7 +346,18 @@ if (item == "sword") {
 if (item == "armor") {
     loopNum = 4;
 }
-
+if (item == "bow") {
+    loopNum = 5;
+}
+if (item == "arrows") {
+    loopNum = 6;
+}
+if (item == "healthkit") {
+    loopNum = 7;
+}
+if (item == "bandages") {
+    loopNum = 8;
+}
 
 while (!infile.eof()) {
 
