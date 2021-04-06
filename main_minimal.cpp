@@ -31,10 +31,10 @@ int main(int argc, char * argv[])
         // Create bot object
 
 
-        /////////////////////BOT TOKEN LINE
+        ////////////////////BOT TOKEN LINE
 
 
-         // These callbacks are what the lib calls when messages come in
+        // These callbacks are what the lib calls when messages come in
         bot.set_on_message_create([&](aegis::gateway::events::message_create obj)
         {
                 try
@@ -82,10 +82,15 @@ int main(int argc, char * argv[])
                     }
                     infile.close();                                         //file output
                     if (found == 0) {
-                        _channel.create_message(fmt::format("Hello {}, you must be new here, type 'bm start' to get started", username));
+                        aegis::gateway::objects::embed newp;
+                        newp.title(fmt::format("Hello {}, you must be new here, type 'bm start' to get started.", obj.msg.author.username));
+                        
+                        _channel.create_message_embed("", newp);
+
+                        
                         std::ofstream outfile;                                                  
                         outfile.open("testfile.txt", std::ofstream::out | std::ofstream::app);
-                        outfile << username << std::endl << "1" << std::endl << "0" << std::endl << "100" << std::endl << "no" << std::endl << "no" << std::endl;
+                        outfile << username << std::endl << "1" << std::endl << "0" << std::endl << "100" << std::endl << "no" << std::endl << "no" << std::endl << "no" << std::endl << "0" << std::endl << "no" << std::endl << "0" << std::endl;
                         outfile.close();
                     }else {
                         std::string plevel = "";
@@ -243,30 +248,44 @@ int main(int argc, char * argv[])
                         }if (content == "bm shop") {
                             _channel.create_message_embed("", shop);
                         }
+                        std::vector<aegis::gateway::objects::field> encounter;
+                            aegis::gateway::objects::field egold, ehealth, esituation;
+                                aegis::gateway::objects::embed encount;
+
                         if (content == "bm adventure") {
-                            int gold;
-                            int health;
-                            bool flee = false;
-                            _channel.create_message("You may encounter dangerous mobs and/or find loot...");
+                            int gold; int health; int oldGold; int newGold; int oldHealth; int newHealth;
+
                             srand(time(0));
-                            int num = rand() % 3 + 1;
+                            //int num = rand() % 3 + 1;
+                            int num = 0;
                             switch (num) {
                             case 0:
+                                esituation.name("Holy Moly");
+                                esituation.value("You found a HUGE ASS SPIDER");
                                 gold = rand() % 25 + 25;
-                                _channel.create_message(fmt::format("You found {} gold!", gold));
+                                egold.value(fmt::format("You found {} gold!", gold)); 
+                                egold.name("Gold: ");
+                                health = rand() % 25 + 25; 
+                                ehealth.value(fmt::format("You lost {} health!", health));
+                                ehealth.name("Health: ");
+                                encounter.push_back(esituation);encounter.push_back(egold);encounter.push_back(ehealth);
+
+                                encount.title("Encounter:");
+                                encount.color(31);
+                                encount.fields(encounter);
+
+                                _channel.create_message_embed("", encount);
+
+                                oldGold = stoi(pgold);
+                                newGold = oldGold + gold;
+                                oldHealth = stoi(phealth);
+                                newHealth = oldHealth - health;
+                                
                                 break;
                             case 1:
                                 gold = rand() % 25 + 25;
                                 _channel.create_message(fmt::format("You found {} gold!", gold));
-                                //_channel.create_message("You found encountered a poisonous spider. \n Do you wish to flee or kill?");
-                                //std::string content{ obj.msg.get_content() };
-                                //if (content == "flee") {
-                                //    _channel.create_message("You got away safely");
-                                //}
-                                //else if (content == "kill") {
-                                //    health = rand() % 15 + 10;
-                                //    _channel.create_message(fmt::format("You lost {} health!", health));
-                                //}
+                               
                                 break;
                             case 2:
                                 health = rand() % 25 + 25;
@@ -276,6 +295,10 @@ int main(int argc, char * argv[])
                                 _channel.create_message("You found a set of old armor!");
                                 break;
                             }
+                               std::string newG = std::to_string(newGold);
+                                replace(username, "gold", newG);
+                                std::string newH = std::to_string(newHealth);
+                                replace(username, "health", newH);
                         }
                         }
                 // Send a message, wait for message to successfully be sent, then react to that message
