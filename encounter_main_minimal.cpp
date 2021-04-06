@@ -31,7 +31,7 @@ int main(int argc, char * argv[])
         // Create bot object
 
 
-        aegis::core bot(aegis::create_bot_t().log_level(spdlog::level::trace).token("ODE0OTc2NzgzMDUyNTcwNjI0.YDlsRg.k3rmIoi_YksQzqfmL1r1Uvrnbas"));
+       //BOT TOKEN LINE
 
 
         // These callbacks are what the lib calls when messages come in
