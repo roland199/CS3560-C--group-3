@@ -22,21 +22,21 @@ using aegis::rest::rest_reply;
 using aegis::gateway::objects::message;
 
 void replace(std::string username, std::string item, std::string change);
+void deleteSpace();
+void pdeath(std::string username, aegis::channel& _chan);
 
-int main(int argc, char * argv[])
+
+int main(int argc, char* argv[])
 {
     using namespace std::chrono_literals;
     try
     {
         // Create bot object
-
-
-        ////////////////////BOT TOKEN LINE
-
+        // BOT TOKEN LINE
 
         // These callbacks are what the lib calls when messages come in
         bot.set_on_message_create([&](aegis::gateway::events::message_create obj)
-        {
+            {
                 try
                 {
                     //get snowflakes related to this message
@@ -76,7 +76,7 @@ int main(int argc, char * argv[])
                     {
                         std::string temp = "";
                         getline(infile, temp);
-                        if(temp == user){
+                        if (temp == user) {
                             found = 1;
                         }
                     }
@@ -84,16 +84,16 @@ int main(int argc, char * argv[])
                     if (found == 0) {
                         aegis::gateway::objects::embed newp;
                         newp.title(fmt::format("Hello {}, you must be new here, type 'bm start' to get started.", obj.msg.author.username));
-                        
+
                         _channel.create_message_embed("", newp);
 
-                        
-                        std::ofstream outfile;                                                  
+                        std::ofstream outfile;
                         outfile.open("testfile.txt", std::ofstream::out | std::ofstream::app);
-                        outfile << username << std::endl << "1" << std::endl << "0" << std::endl << "100" << std::endl << "no" << std::endl << "no" << std::endl << "no" << std::endl << "0" << std::endl << "no" << std::endl << "0" << std::endl;
+                        outfile << username << std::endl << "0" << std::endl << "0" << std::endl << "100" << std::endl << "no" << std::endl << "no" << std::endl << "no" << std::endl << "0" << std::endl << "no" << std::endl << "0" << std::endl;
                         outfile.close();
-                    }else {
-                        std::string plevel = "";
+                    }
+                    else {
+                        std::string pexperience = "";
                         std::string pgold = "";
                         std::string phealth = "";
                         std::string psword = "";
@@ -112,7 +112,7 @@ int main(int argc, char * argv[])
                                 find = 1;
                             }
                         }
-                        getline(infile, plevel);                   // getting profile info
+                        getline(infile, pexperience);                   // getting profile info
                         getline(infile, pgold);
                         getline(infile, phealth);
                         getline(infile, psword);
@@ -121,7 +121,7 @@ int main(int argc, char * argv[])
                         getline(infile, parrows);
                         getline(infile, phealthkit);
                         getline(infile, pbandages);
-                      
+
                         infile.close();
 
                         std::vector<aegis::gateway::objects::field> startFields;
@@ -152,7 +152,7 @@ int main(int argc, char * argv[])
                         cmdBuy.value("Purchase items in the shop");
                         cmdSell.name("'bm sell [item]'");
                         cmdSell.value("Sell items you own");
-                        cmdFields.push_back(cmdProfile); cmdFields.push_back(cmdShop); cmdFields.push_back(cmdAdventure); cmdFields.push_back(cmdBuy); cmdFields.push_back(cmdSell); 
+                        cmdFields.push_back(cmdProfile); cmdFields.push_back(cmdShop); cmdFields.push_back(cmdAdventure); cmdFields.push_back(cmdBuy); cmdFields.push_back(cmdSell);
 
                         aegis::gateway::objects::embed help;
                         help.title("List of Commands");
@@ -167,7 +167,7 @@ int main(int argc, char * argv[])
                         bow.name("Bow");
                         bow.value("50 Gold");
                         bow.is_inline(true);
-                        arrows.name("Arrows");
+                        arrows.name("Arrows(10)");
                         arrows.value("25 Gold");
                         arrows.is_inline(true);
                         armor.name("Armor");
@@ -176,7 +176,7 @@ int main(int argc, char * argv[])
                         healthKit.name("Health Kit");
                         healthKit.value("100 Gold");
                         healthKit.is_inline(true);
-                        bandages.name("Bandages");
+                        bandages.name("Bandages(5)");
                         bandages.value("50 Gold");
                         bandages.is_inline(true);
                         itemFields.push_back(sword); itemFields.push_back(bow); itemFields.push_back(arrows); itemFields.push_back(armor); itemFields.push_back(healthKit); itemFields.push_back(bandages);
@@ -187,17 +187,17 @@ int main(int argc, char * argv[])
                         shop.fields(itemFields);
 
                         std::vector<aegis::gateway::objects::field> stats;                  // Profile Vector
-                        aegis::gateway::objects::field level, gold, health;
-                        level.name("Level: ");
-                        level.value(plevel);
-                        level.is_inline(true);
+                        aegis::gateway::objects::field exp, gold, health;
+                        exp.name("Experience: ");
+                        exp.value(pexperience);
+                        exp.is_inline(true);
                         gold.name("Gold: ");
                         gold.value(pgold);
                         gold.is_inline(true);
                         health.name("Health: ");
                         health.value(phealth);
                         health.is_inline(true);
-                        stats.push_back(level);stats.push_back(gold);stats.push_back(health);
+                        stats.push_back(exp);stats.push_back(gold);stats.push_back(health);
 
                         std::vector<aegis::gateway::objects::field> inventory;
                         aegis::gateway::objects::field lsword, larmor, lbow, larrows, lhealthkit, lbandages;
@@ -229,13 +229,9 @@ int main(int argc, char * argv[])
                         linventory.color(31);
                         linventory.fields(inventory);
 
-
-
-                        if (content == "test")                              // manipulating profile data
-                        {
-                            replace(username, "gold", "3333");
+                        if (content == "test") {
+                            deleteSpace();
                         }
-                        
                         if (content == "bm profile") {
                             _channel.create_message_embed("", profile);
                             _channel.create_message_embed("", linventory);
@@ -245,27 +241,349 @@ int main(int argc, char * argv[])
                         }
                         if (content == "bm help") {
                             _channel.create_message_embed("", help);
-                        }if (content == "bm shop") {
+                        }
+                        if (content == "bm shop") {
                             _channel.create_message_embed("", shop);
                         }
+
+                        std::vector<aegis::gateway::objects::field> buying;             //BUYING AREA OF CODE
+                        aegis::gateway::objects::field bitem;
+                        aegis::gateway::objects::embed bought;
+
+                        if (content == "bm buy sword") {
+                            int oldGold = stoi(pgold);
+                            if (psword == "no") {
+                                if (oldGold >= 100) {
+                                    oldGold -= 100;
+                                    std::string newG = std::to_string(oldGold);
+                                    replace(username, "gold", newG);
+                                    replace(username, "sword", "yes");
+                                    bitem.name("Transaction Complete");
+                                    bitem.value("Obtained a sword for 100 gold");
+                                    buying.push_back(bitem);
+                                }
+                                else {
+                                    bitem.name("Transaction Incomplete");
+                                    bitem.value("You don't have enough gold");
+                                    buying.push_back(bitem);
+                                }
+                            }
+                            else {
+                                bitem.name("Transaction Incomplete");
+                                bitem.value("You can only carry one sword");
+                                buying.push_back(bitem);
+                            }
+                            bought.title("Buying from Shop");
+                            bought.color(31);
+                            bought.fields(buying);
+                            _channel.create_message_embed("", bought);
+                        }
+                        if (content == "bm buy bow") {
+                            int oldGold = stoi(pgold);
+                            if (pbow == "no") {
+                                if (oldGold >= 50) {
+                                    oldGold -= 50;
+                                    std::string newG = std::to_string(oldGold);
+                                    replace(username, "gold", newG);
+                                    replace(username, "bow", "yes");
+                                    bitem.name("Transaction Complete");
+                                    bitem.value("Obtained a bow for 50 gold");
+                                    buying.push_back(bitem);
+                                }
+                                else {
+                                    bitem.name("Transaction Incomplete");
+                                    bitem.value("You don't have enough gold");
+                                    buying.push_back(bitem);
+                                }
+                            }
+                            else {
+                                bitem.name("Transaction Incomplete");
+                                bitem.value("You can only carry one bow");
+                                buying.push_back(bitem);
+                            }
+                            bought.title("Buying from Shop");
+                            bought.color(31);
+                            bought.fields(buying);
+                            _channel.create_message_embed("", bought);
+                        }
+                        if (content == "bm buy arrows") {
+                            int oldGold = stoi(pgold);
+                            int oldarrows = stoi(parrows);
+                            if (oldarrows + 10 <= 30) {
+                                if (oldGold >= 25) {
+                                    oldGold -= 25;
+                                    std::string newG = std::to_string(oldGold);
+                                    replace(username, "gold", newG);
+                                    oldarrows += 10;
+                                    std::string newA = std::to_string(oldarrows);
+                                    replace(username, "arrows", newA);
+                                    bitem.name("Transaction Complete");
+                                    bitem.value("Obtained a 10 arrows for 25 gold");
+                                    buying.push_back(bitem);
+                                }
+                                else {
+                                    bitem.name("Transaction Incomplete");
+                                    bitem.value("You don't have enough gold");
+                                    buying.push_back(bitem);
+                                }
+                            }
+                            else {
+                                bitem.name("Transaction Incomplete");
+                                bitem.value("You can only carry 30 arrows");
+                                buying.push_back(bitem);
+                            }
+                            bought.title("Buying from Shop");
+                            bought.color(31);
+                            bought.fields(buying);
+                            _channel.create_message_embed("", bought);
+                        }
+                        if (content == "bm buy armor") {
+                            int oldGold = stoi(pgold);
+                            if (parmor == "no") {
+                                if (oldGold >= 200) {
+                                    oldGold -= 200;
+                                    std::string newG = std::to_string(oldGold);
+                                    replace(username, "gold", newG);
+                                    replace(username, "armor", "yes");
+                                    bitem.name("Transaction Complete");
+                                    bitem.value("Obtained a set of armor for 200 gold");
+                                    buying.push_back(bitem);
+                                }
+                                else {
+                                    bitem.name("Transaction Incomplete");
+                                    bitem.value("You don't have enough gold");
+                                    buying.push_back(bitem);
+                                }
+                            }
+                            else {
+                                bitem.name("Transaction Incomplete");
+                                bitem.value("You can only carry one set of armor");
+                                buying.push_back(bitem);
+                            }
+                            bought.title("Buying from Shop");
+                            bought.color(31);
+                            bought.fields(buying);
+                            _channel.create_message_embed("", bought);
+                        }
+                        if (content == "bm buy health kit") {
+                            int oldGold = stoi(pgold);
+                            if (phealthkit == "no") {
+                                if (oldGold >= 100) {
+                                    oldGold -= 100;
+                                    std::string newG = std::to_string(oldGold);
+                                    replace(username, "gold", newG);
+                                    replace(username, "healthkit", "yes");
+                                    bitem.name("Transaction Complete");
+                                    bitem.value("Obtained a health kit for 100 gold");
+                                    buying.push_back(bitem);
+                                }
+                                else {
+                                    bitem.name("Transaction Incomplete");
+                                    bitem.value("You don't have enough gold");
+                                    buying.push_back(bitem);
+                                }
+                            }
+                            else {
+                                bitem.name("Transaction Incomplete");
+                                bitem.value("You can only carry one health kit");
+                                buying.push_back(bitem);
+                            }
+                            bought.title("Buying from Shop");
+                            bought.color(31);
+                            bought.fields(buying);
+                            _channel.create_message_embed("", bought);
+                        }
+                        if (content == "bm buy bandages") {
+                            int oldGold = stoi(pgold);
+                            int oldbandages = stoi(pbandages);
+                            if (oldbandages + 5 <= 20) {
+                                if (oldGold >= 50) {
+                                    oldGold -= 50;
+                                    std::string newG = std::to_string(oldGold);
+                                    replace(username, "gold", newG);
+                                    oldbandages += 5;
+                                    std::string newB = std::to_string(oldbandages);
+                                    replace(username, "bandages", newB);
+                                    bitem.name("Transaction Complete");
+                                    bitem.value("Obtained a 5 bandages for 50 gold");
+                                    buying.push_back(bitem);
+                                }
+                                else {
+                                    bitem.name("Transaction Incomplete");
+                                    bitem.value("You don't have enough gold");
+                                    buying.push_back(bitem);
+                                }
+                            }
+                            else {
+                                bitem.name("Transaction Incomplete");
+                                bitem.value("You can only carry 20 bandages");
+                                buying.push_back(bitem);
+                            }
+                            bought.title("Buying from Shop");
+                            bought.color(31);
+                            bought.fields(buying);
+                            _channel.create_message_embed("", bought);                     //BUYING AREA OF CODE END
+                        }
+                        if (content == "bm sell sword") {                                  //SELLING AREA OF CODE 
+                            int oldGold = stoi(pgold);
+                            if (psword == "yes") {
+                                oldGold += 100;
+                                std::string newG = std::to_string(oldGold);
+                                replace(username, "gold", newG);
+                                replace(username, "sword", "no");
+                                bitem.name("Transaction Complete");
+                                bitem.value("Sold a sword for 100 gold");
+                                buying.push_back(bitem);
+                            }
+                            else {
+                                bitem.name("Transaction Incomplete");
+                                bitem.value("You do not own a sword to sell");
+                                buying.push_back(bitem);
+                            }
+                            bought.title("Selling to Shop");
+                            bought.color(31);
+                            bought.fields(buying);
+                            _channel.create_message_embed("", bought);
+                        }
+                        if (content == "bm sell bow") {
+                            int oldGold = stoi(pgold);
+                            if (pbow == "yes") {
+                                oldGold += 50;
+                                std::string newG = std::to_string(oldGold);
+                                replace(username, "gold", newG);
+                                replace(username, "bow", "no");
+                                bitem.name("Transaction Complete");
+                                bitem.value("Sold a bow for 50 gold");
+                                buying.push_back(bitem);
+                            }
+                            else {
+                                bitem.name("Transaction Incomplete");
+                                bitem.value("You do not own a bow to sell");
+                                buying.push_back(bitem);
+                            }
+                            bought.title("Selling to Shop");
+                            bought.color(31);
+                            bought.fields(buying);
+                            _channel.create_message_embed("", bought);
+                        }
+                        if (content == "bm sell armor") {
+                            int oldGold = stoi(pgold);
+                            if (parmor == "yes") {
+                                oldGold += 200;
+                                std::string newG = std::to_string(oldGold);
+                                replace(username, "gold", newG);
+                                replace(username, "armor", "no");
+                                bitem.name("Transaction Complete");
+                                bitem.value("Sold armor for 200 gold");
+                                buying.push_back(bitem);
+                            }
+                            else {
+                                bitem.name("Transaction Incomplete");
+                                bitem.value("You do not own armor to sell");
+                                buying.push_back(bitem);
+                            }
+                            bought.title("Selling to Shop");
+                            bought.color(31);
+                            bought.fields(buying);
+                            _channel.create_message_embed("", bought);
+                        }
+                        if (content == "bm sell health kit") {
+                            int oldGold = stoi(pgold);
+                            if (phealthkit == "yes") {
+                                oldGold += 100;
+                                std::string newG = std::to_string(oldGold);
+                                replace(username, "gold", newG);
+                                replace(username, "healthkit", "no");
+                                bitem.name("Transaction Complete");
+                                bitem.value("Sold a health kit for 100 gold");
+                                buying.push_back(bitem);
+                            }
+                            else {
+                                bitem.name("Transaction Incomplete");
+                                bitem.value("You do not own a health kit to sell");
+                                buying.push_back(bitem);
+                            }
+                            bought.title("Selling to Shop");
+                            bought.color(31);
+                            bought.fields(buying);
+                            _channel.create_message_embed("", bought);
+                        }
+                        if (content == "bm sell bandages") {
+                            int oldGold = stoi(pgold);
+                            int oldbandages = stoi(pbandages);
+                            if (oldbandages >= 5) {
+                                oldGold += 50;
+                                std::string newG = std::to_string(oldGold);
+                                replace(username, "gold", newG);
+                                oldbandages -= 5;
+                                std::string newB = std::to_string(oldbandages);
+                                replace(username, "bandages", newB);
+                                bitem.name("Transaction Complete");
+                                bitem.value("Sold 5 bandages for 50 gold");
+                                buying.push_back(bitem);
+                            }
+                            else {
+                                bitem.name("Transaction Incomplete");
+                                bitem.value("You do not own 5 bandages to sell");
+                                buying.push_back(bitem);
+                            }
+                            bought.title("Selling to Shop");
+                            bought.color(31);
+                            bought.fields(buying);
+                            _channel.create_message_embed("", bought);
+                        }
+                        if (content == "bm sell arrows") {
+                            int oldGold = stoi(pgold);
+                            int oldarrows = stoi(parrows);
+                            if (oldarrows >= 10) {
+                                oldGold += 25;
+                                std::string newG = std::to_string(oldGold);
+                                replace(username, "gold", newG);
+                                oldarrows -= 10;
+                                std::string newA = std::to_string(oldarrows);
+                                replace(username, "arrows", newA);
+                                bitem.name("Transaction Complete");
+                                bitem.value("Sold 10 arrows for 25 gold");
+                                buying.push_back(bitem);
+                            }
+                            else {
+                                bitem.name("Transaction Incomplete");
+                                bitem.value("You do not own 10 arrows to sell");
+                                buying.push_back(bitem);
+                            }
+                            bought.title("Selling to Shop");
+                            bought.color(31);
+                            bought.fields(buying);
+                            _channel.create_message_embed("", bought);
+                        }                                                                             //SELLING AREA OF CODE END
+
+
+
+
                         std::vector<aegis::gateway::objects::field> encounter;
-                            aegis::gateway::objects::field egold, ehealth, esituation;
-                                aegis::gateway::objects::embed encount;
+                        aegis::gateway::objects::field egold, ehealth, esituation;
+                        aegis::gateway::objects::embed encount;
 
                         if (content == "bm adventure") {
-                            int gold; int health; int oldGold; int newGold; int oldHealth; int newHealth;
+                            int gold; int health; int oldGold; int newGold; int oldHealth; int newHealth; int oldExp; int newExp; int dead;
 
                             srand(time(0));
-                            //int num = rand() % 3 + 1;
-                            int num = 0;
+                            int num = rand() % 4;
+                            //int num = 1;
                             switch (num) {
                             case 0:
                                 esituation.name("Holy Moly");
-                                esituation.value("You found a HUGE ASS SPIDER");
-                                gold = rand() % 25 + 25;
-                                egold.value(fmt::format("You found {} gold!", gold)); 
+                                esituation.value("You found a HUGE SPIDER");
+                                gold = rand() % 60 + 75;
+                                egold.value(fmt::format("You found {} gold!", gold));
                                 egold.name("Gold: ");
-                                health = rand() % 25 + 25; 
+                                if (parmor == "yes") {
+                                    if (psword == "yes") {
+
+                                    }
+                                }
+                                health = rand() % 25 + 25;
+
                                 ehealth.value(fmt::format("You lost {} health!", health));
                                 ehealth.name("Health: ");
                                 encounter.push_back(esituation);encounter.push_back(egold);encounter.push_back(ehealth);
@@ -274,62 +592,121 @@ int main(int argc, char * argv[])
                                 encount.color(31);
                                 encount.fields(encounter);
 
-                                _channel.create_message_embed("", encount);
+                                oldGold = stoi(pgold);
+                                newGold = oldGold + gold;
+                                oldHealth = stoi(phealth);
+                                newHealth = oldHealth - health;
+                                oldExp = stoi(pexperience);
+                                newExp = oldExp + 1;
+                                break;
+                            case 1:
+                                esituation.name("Trolling in The Deep");
+                                esituation.value("You defeated a CAVE TROLL");
+                                gold = rand() % 25 + 50;
+                                egold.value(fmt::format("You found {} gold!", gold));
+                                egold.name("Gold: ");
+                                health = rand() % 25 + 25;
+                                ehealth.value(fmt::format("You lost {} health!", health));
+                                ehealth.name("Health: ");
+                                encounter.push_back(esituation); encounter.push_back(egold); encounter.push_back(ehealth);
+
+                                encount.title("Encounter:");
+                                encount.color(31);
+                                encount.fields(encounter);
 
                                 oldGold = stoi(pgold);
                                 newGold = oldGold + gold;
                                 oldHealth = stoi(phealth);
                                 newHealth = oldHealth - health;
-                                
-                                break;
-                            case 1:
-                                gold = rand() % 25 + 25;
-                                _channel.create_message(fmt::format("You found {} gold!", gold));
-                               
+                                oldExp = stoi(pexperience);
+                                newExp = oldExp + 1;
                                 break;
                             case 2:
-                                health = rand() % 25 + 25;
-                                _channel.create_message(fmt::format("You killed a giant spider! But you lost {} health :(", health));
+                                esituation.name("Hidden Treasure");
+                                esituation.value("You discovered a pouch of gold!");
+                                gold = rand() % 25 + 50;
+                                egold.value(fmt::format("You found {} gold!", gold));
+                                egold.name("Gold: ");
+                                encounter.push_back(esituation); encounter.push_back(egold);
+
+                                encount.title("Encounter:");
+                                encount.color(31);
+                                encount.fields(encounter);
+
+                                oldGold = stoi(pgold);
+                                newGold = oldGold + gold;
+                                newHealth = stoi(phealth);
+                                oldExp = stoi(pexperience);
+                                newExp = oldExp + 1;
                                 break;
                             case 3:
-                                _channel.create_message("You found a set of old armor!");
+                                esituation.name("Oh No");
+                                esituation.value("You were ambushed by bandits!");
+                                gold = rand() % 30 + 15;
+                                egold.value(fmt::format("You lost {} gold!", gold));
+                                egold.name("Gold: ");
+                                health = rand() % 25 + 25;
+                                ehealth.value(fmt::format("You lost {} health!", health));
+                                ehealth.name("Health: ");
+                                encounter.push_back(esituation); encounter.push_back(egold); encounter.push_back(ehealth);
+
+                                encount.title("Encounter:");
+                                encount.color(31);
+                                encount.fields(encounter);
+
+                                oldGold = stoi(pgold);
+                                newGold = oldGold - gold;
+                                oldHealth = stoi(phealth);
+                                newHealth = oldHealth - health;
+                                oldExp = stoi(pexperience);
+                                newExp = oldExp + 1;
                                 break;
                             }
-                               std::string newG = std::to_string(newGold);
-                                replace(username, "gold", newG);
-                                std::string newH = std::to_string(newHealth);
-                                replace(username, "health", newH);
-                        }
-                        }
-                // Send a message, wait for message to successfully be sent, then react to that message
-                 if (content == "~Delay")
-                {
-                    _channel.create_message("First message").then([](message msg)
-                    {
-                        // add a reaction to that new message
-                        msg.create_reaction("success:429554838083207169");
-                    });
-                }
-                else if (content == "~exit")
-                {
-                    bot.shutdown();
-                    return;
-                }
+                            if (newHealth <= 0) {
+                                pdeath(username, _channel);
+                            }
+                            else {
+                            _channel.create_message_embed("", encount);
+                            std::string newG = std::to_string(newGold);
+                            replace(username, "gold", newG);
+                            std::string newH = std::to_string(newHealth);
+                            replace(username, "health", newH);
+                            std::string newE = std::to_string(newExp);
+                            replace(username, "experience", newE);
+                            }
+                            
 
-            }
-            catch (std::exception & e)
-            {
-                std::cout << "Error: " << e.what() << '\n';
-            }
-            return;
-        });
+                        }
+                    }
+                    // Send a message, wait for message to successfully be sent, then react to that message
+                    if (content == "~Delay")
+                    {
+                        _channel.create_message("First message").then([](message msg)
+                            {
+                                // add a reaction to that new message
+                                msg.create_reaction("success:429554838083207169");
+                            });
+                    }
+                    else if (content == "~exit")
+                    {
+                        bot.shutdown();
+                        return;
+                    }
+
+                }
+                catch (std::exception& e)
+                {
+                    std::cout << "Error: " << e.what() << '\n';
+                }
+                return;
+            });
 
         // start the bot
         bot.run();
         // yield thread execution to the library
         bot.yield();
     }
-    catch (std::exception & e)
+    catch (std::exception& e)
     {
         std::cout << "Error during initialization: " << e.what() << '\n';
         return 1;
@@ -346,61 +723,105 @@ int main(int argc, char * argv[])
 
 void replace(std::string username, std::string item, std::string change)
 {
-std::ifstream infile;
-std::ofstream outfile;
-infile.open("testfile.txt");
-outfile.open("temp.txt");
-int loopNum = 0;
+    std::ifstream infile;
+    std::ofstream outfile;
+    infile.open("testfile.txt");
+    outfile.open("temp.txt");
+    int loopNum = 0;
 
-std::string line;
+    std::string line;
 
-if (item == "gold") {
-    loopNum = 1;
-}
-if (item == "level") {
-    loopNum = 0;
-}
-if (item == "health") {
-    loopNum = 2;
-}
-if (item == "sword") {
-    loopNum = 3;
-}
-if (item == "armor") {
-    loopNum = 4;
-}
-if (item == "bow") {
-    loopNum = 5;
-}
-if (item == "arrows") {
-    loopNum = 6;
-}
-if (item == "healthkit") {
-    loopNum = 7;
-}
-if (item == "bandages") {
-    loopNum = 8;
-}
+    if (item == "gold") {
+        loopNum = 1;
+    }
+    if (item == "experience") {
+        loopNum = 0;
+    }
+    if (item == "health") {
+        loopNum = 2;
+    }
+    if (item == "sword") {
+        loopNum = 3;
+    }
+    if (item == "armor") {
+        loopNum = 4;
+    }
+    if (item == "bow") {
+        loopNum = 5;
+    }
+    if (item == "arrows") {
+        loopNum = 6;
+    }
+    if (item == "healthkit") {
+        loopNum = 7;
+    }
+    if (item == "bandages") {
+        loopNum = 8;
+    }
 
-while (!infile.eof()) {
+    while (!infile.eof()) {
 
-    getline(infile, line);
-    if (line == username) {
-        outfile << line << std::endl;
-        for (int i = 0; i < loopNum; i++) {
+        getline(infile, line);
+        if (line == username) {
+            outfile << line << std::endl;
+            for (int i = 0; i < loopNum; i++) {
+                getline(infile, line);
+                outfile << line << std::endl;
+            }
             getline(infile, line);
+            outfile << change << std::endl;
+        }
+        else {
             outfile << line << std::endl;
         }
-        getline(infile, line);
-        outfile << change << std::endl;
     }
-    else {
-        outfile << line << std::endl;
-    }
+    outfile.close();
+    infile.close();
+    remove("testfile.txt");
+    rename("temp.txt", "testfile.txt");
+    deleteSpace();
 }
-outfile.close();
-infile.close();
-remove("testfile.txt");
-rename("temp.txt", "testfile.txt");
+void deleteSpace() {
+    std::ifstream infile;
+    std::ofstream outfile;
+    infile.open("testfile.txt");
+    outfile.open("temp.txt");
+    std::string line;
 
+    while (!infile.eof()) {
+
+        getline(infile, line);
+        if (line == "") {
+
+        }
+        else {
+            outfile << line << std::endl;
+        }
+    }
+    outfile.close();
+    infile.close();
+    remove("testfile.txt");
+    rename("temp.txt", "testfile.txt");
+
+}
+void pdeath(std::string username, aegis::channel &_chan) {
+    std::vector<aegis::gateway::objects::field> death;
+    aegis::gateway::objects::field dying;
+    dying.name("You Died");
+    dying.value("Try again?");
+    death.push_back(dying);
+    aegis::gateway::objects::embed sadness;
+    sadness.title("Yikes");
+    sadness.color(31);
+    sadness.fields(death);
+    _chan.create_message_embed("", sadness);
+    replace(username, "experience", "0");
+    replace(username, "gold", "0");
+    replace(username, "health", "100");
+    replace(username, "sword", "no");
+    replace(username, "armor", "no");
+    replace(username, "bow", "no");
+    replace(username, "bandages", "0");
+    replace(username, "healthkit", "no");
+    replace(username, "arrows", "0");
 }
