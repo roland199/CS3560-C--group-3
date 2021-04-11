@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
     try
     {
         // Create bot object
-        // BOT TOKEN LINE
+       //BOT LINE
 
         // These callbacks are what the lib calls when messages come in
         bot.set_on_message_create([&](aegis::gateway::events::message_create obj)
@@ -89,7 +89,7 @@ int main(int argc, char* argv[])
 
                         std::ofstream outfile;
                         outfile.open("testfile.txt", std::ofstream::out | std::ofstream::app);
-                        outfile << username << std::endl << "0" << std::endl << "0" << std::endl << "100" << std::endl << "no" << std::endl << "no" << std::endl << "no" << std::endl << "0" << std::endl << "no" << std::endl << "0" << std::endl;
+                        outfile << username << std::endl << "0" << std::endl << "0" << std::endl << "100" << std::endl << "no" << std::endl << "no" << std::endl << "no" << std::endl << "0" << std::endl << "no" << std::endl << "0" << std::endl << "0" << std::endl;
                         outfile.close();
                     }
                     else {
@@ -102,6 +102,7 @@ int main(int argc, char* argv[])
                         std::string parrows = "";
                         std::string phealthkit = "";
                         std::string pbandages = "";
+                        std::string bm = "";
                         bool find = 0;
                         infile.open("testfile.txt");
                         while (!infile.eof() && find != 1)                          // search for username
@@ -121,6 +122,7 @@ int main(int argc, char* argv[])
                         getline(infile, parrows);
                         getline(infile, phealthkit);
                         getline(infile, pbandages);
+                        getline(infile, bm);
 
                         infile.close();
 
@@ -141,7 +143,7 @@ int main(int argc, char* argv[])
                         start.fields(startFields);
 
                         std::vector<aegis::gateway::objects::field> cmdFields;                  //help vector
-                        aegis::gateway::objects::field cmdShop, cmdAdventure, cmdBuy, cmdSell, cmdProfile;
+                        aegis::gateway::objects::field cmdShop, cmdAdventure, cmdBuy, cmdSell, cmdProfile, cmdUse, cmdTips;
                         cmdProfile.name("'bm profile'");
                         cmdProfile.value("Shows player profile and player inventory");
                         cmdShop.name("'bm shop'");
@@ -152,7 +154,13 @@ int main(int argc, char* argv[])
                         cmdBuy.value("Purchase items in the shop");
                         cmdSell.name("'bm sell [item]'");
                         cmdSell.value("Sell items you own");
-                        cmdFields.push_back(cmdProfile); cmdFields.push_back(cmdShop); cmdFields.push_back(cmdAdventure); cmdFields.push_back(cmdBuy); cmdFields.push_back(cmdSell);
+                        cmdUse.name("'bm use bandage' or 'bm use health kit'");
+                        cmdUse.value("Uses a bandage which heals 10 health or a health kit which heals you fully");
+                        cmdTips.name("Tips");
+                        cmdTips.value("Armor reduces damage taken by 50%.\n Sword reduces damage taken in close quarters by 25%. \n Bow reduces damage taken in a long range encounter by 25%.");
+                        cmdFields.push_back(cmdProfile); cmdFields.push_back(cmdShop); 
+                        cmdFields.push_back(cmdAdventure); cmdFields.push_back(cmdBuy); 
+                        cmdFields.push_back(cmdSell); cmdFields.push_back(cmdUse); cmdFields.push_back(cmdTips);
 
                         aegis::gateway::objects::embed help;
                         help.title("List of Commands");
@@ -195,7 +203,7 @@ int main(int argc, char* argv[])
                         gold.value(pgold);
                         gold.is_inline(true);
                         health.name("Health: ");
-                        health.value(phealth);
+                        health.value(fmt::format("{}/100", phealth));
                         health.is_inline(true);
                         stats.push_back(exp);stats.push_back(gold);stats.push_back(health);
 
@@ -245,7 +253,49 @@ int main(int argc, char* argv[])
                         if (content == "bm shop") {
                             _channel.create_message_embed("", shop);
                         }
-
+                        std::vector<aegis::gateway::objects::field> healing;          
+                        aegis::gateway::objects::field action;
+                        aegis::gateway::objects::embed result;
+                        if (content == "bm use bandage") {
+                            int Bands = stoi(pbandages);
+                            int healed = stoi(phealth);
+                            if (Bands > 0) {
+                                Bands--;
+                                healed += 10;
+                                std::string newH = std::to_string(healed);
+                                std::string newB = std::to_string(Bands);
+                                replace(username, "health", newH);
+                                replace(username, "bandages", newB);
+                                action.name("Used One Bandage");
+                                action.value(fmt::format("Health is now {}/100", healed));
+                            }
+                            else {
+                                action.name("Can't Use a Bandage");
+                                action.value("You have no bandages to use");
+                            }
+                            healing.push_back(action);\
+                            result.title("Healing:");
+                            result.color(31);
+                            result.fields(healing);
+                            _channel.create_message_embed("", result);
+                        }
+                        if (content == "bm use health kit") {
+                            if (phealthkit == "yes") {
+                                replace(username, "health", "100");
+                                replace(username, "healthkit", "no");
+                                action.name("Used Health Kit");
+                                action.value("Health is now 100/100");
+                            }
+                            else {
+                                action.name("Can't Use a Health Kit");
+                                action.value("You do not have a health kit to use");
+                            }
+                            healing.push_back(action);\
+                            result.title("Healing:");
+                            result.color(31);
+                            result.fields(healing);
+                            _channel.create_message_embed("", result);
+                        }
                         std::vector<aegis::gateway::objects::field> buying;             //BUYING AREA OF CODE
                         aegis::gateway::objects::field bitem;
                         aegis::gateway::objects::embed bought;
@@ -568,8 +618,8 @@ int main(int argc, char* argv[])
                             int gold; int health; int oldGold; int newGold; int oldHealth; int newHealth; int oldExp; int newExp; int dead;
 
                             srand(time(0));
-                            int num = rand() % 4;
-                            //int num = 1;
+                            //int num = rand() % 4;
+                            int num = 0;
                             switch (num) {
                             case 0:
                                 esituation.name("Holy Moly");
@@ -577,12 +627,14 @@ int main(int argc, char* argv[])
                                 gold = rand() % 60 + 75;
                                 egold.value(fmt::format("You found {} gold!", gold));
                                 egold.name("Gold: ");
+                                health = rand() % 10 + 40;
                                 if (parmor == "yes") {
-                                    if (psword == "yes") {
-
-                                    }
+                                    health *= .5;
                                 }
-                                health = rand() % 25 + 25;
+                                if (psword == "yes") {
+                                    health -= (health * .25);
+                                }
+                                
 
                                 ehealth.value(fmt::format("You lost {} health!", health));
                                 ehealth.name("Health: ");
@@ -605,7 +657,13 @@ int main(int argc, char* argv[])
                                 gold = rand() % 25 + 50;
                                 egold.value(fmt::format("You found {} gold!", gold));
                                 egold.name("Gold: ");
-                                health = rand() % 25 + 25;
+                                health = rand() % 10 + 40;
+                                if (parmor == "yes") {
+                                    health *= .5;
+                                }
+                                if (psword == "yes") {
+                                    health -= (health * .25);
+                                }
                                 ehealth.value(fmt::format("You lost {} health!", health));
                                 ehealth.name("Health: ");
                                 encounter.push_back(esituation); encounter.push_back(egold); encounter.push_back(ehealth);
@@ -645,7 +703,13 @@ int main(int argc, char* argv[])
                                 gold = rand() % 30 + 15;
                                 egold.value(fmt::format("You lost {} gold!", gold));
                                 egold.name("Gold: ");
-                                health = rand() % 25 + 25;
+                                health = rand() % 10 + 40;
+                                if (parmor == "yes") {
+                                    health *= .5;
+                                }
+                                if (pbow == "yes") {
+                                    health -= (health * .25);
+                                }
                                 ehealth.value(fmt::format("You lost {} health!", health));
                                 ehealth.name("Health: ");
                                 encounter.push_back(esituation); encounter.push_back(egold); encounter.push_back(ehealth);
@@ -676,6 +740,31 @@ int main(int argc, char* argv[])
                             }
                             
 
+                        }
+
+                        std::vector<aegis::gateway::objects::field> boss;
+                        aegis::gateway::objects::field actions;
+                        aegis::gateway::objects::embed final;
+                        if (content == "bm baermelk") {
+                            int exp = stoi(pexperience);
+                            if (exp >= 10) {
+                                replace(username, "bm", "1");
+                                final.title("Baermelk");
+                                actions.name("Congratulations on making it this far. Now time for the real test.");
+                                actions.value("After some time walking, you see Baermelk in the distance...");
+                            }
+                            else {
+                                actions.name("You don't have enough experience to fight the one and only Baermelk");
+                                int need = 10 - exp;
+                                actions.value(fmt::format("You need {} more experience", need));
+                                
+                                final.title("Not Yet!");
+
+                            }
+                            boss.push_back(actions); 
+                            final.color(31);
+                            final.fields(boss);
+                            _channel.create_message_embed("", final);
                         }
                     }
                     // Send a message, wait for message to successfully be sent, then react to that message
@@ -758,6 +847,9 @@ void replace(std::string username, std::string item, std::string change)
     if (item == "bandages") {
         loopNum = 8;
     }
+    if (item == "bm") {
+        loopNum = 9;
+    }
 
     while (!infile.eof()) {
 
@@ -824,4 +916,5 @@ void pdeath(std::string username, aegis::channel &_chan) {
     replace(username, "bandages", "0");
     replace(username, "healthkit", "no");
     replace(username, "arrows", "0");
+    replace(username, "bm", "0");
 }
