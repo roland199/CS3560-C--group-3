@@ -1,0 +1,9 @@
+This branch includes all of the Unit Testing and Analysis
+for the Baermelk bot. Each of the team members will submit
+their unit testing seperately, but the Static Analysis
+will be a group effort and placed in this branch as one file.
+
+Tools:
+-Visual Studio
+-Valgrind
+-cppcheck
