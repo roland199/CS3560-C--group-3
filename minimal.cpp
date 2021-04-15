@@ -266,11 +266,11 @@ int main(int argc, char* argv[])
                                 std::string newB = std::to_string(Bands);
                                 replace(username, "health", newH);
                                 replace(username, "bandages", newB);
-                                action.name("Used One Bandage");
+                                action.name("Used One Bandage :adhesive_bandage:");
                                 action.value(fmt::format("Health is now {}/100", healed));
                             }
                             else {
-                                action.name("Can't Use a Bandage");
+                                action.name("Can't Use a Bandage :adhesive_bandage:");
                                 action.value("You have no bandages to use");
                             }
                             healing.push_back(action); \
@@ -283,11 +283,11 @@ int main(int argc, char* argv[])
                             if (phealthkit == "yes") {
                                 replace(username, "health", "100");
                                 replace(username, "healthkit", "no");
-                                action.name("Used Health Kit");
+                                action.name("Used Health Kit <:health:831276638884855878>");
                                 action.value("Health is now 100/100");
                             }
                             else {
-                                action.name("Can't Use a Health Kit");
+                                action.name("Can't Use a Health Kit <:health:831276638884855878>");
                                 action.value("You do not have a health kit to use");
                             }
                             healing.push_back(action); \
@@ -309,12 +309,12 @@ int main(int argc, char* argv[])
                                     replace(username, "gold", newG);
                                     replace(username, "sword", "yes");
                                     bitem.name("Transaction Complete");
-                                    bitem.value("Obtained a sword for 100 gold");
+                                    bitem.value("Obtained a sword <:sword:831267587370909766> for 100 gold <:goldcoin:829105003129995346>");
                                     buying.push_back(bitem);
                                 }
                                 else {
                                     bitem.name("Transaction Incomplete");
-                                    bitem.value("You don't have enough gold");
+                                    bitem.value("You don't have enough gold <:goldcoin:829105003129995346>");
                                     buying.push_back(bitem);
                                 }
                             }
@@ -337,12 +337,12 @@ int main(int argc, char* argv[])
                                     replace(username, "gold", newG);
                                     replace(username, "bow", "yes");
                                     bitem.name("Transaction Complete");
-                                    bitem.value("Obtained a bow for 50 gold");
+                                    bitem.value("Obtained a bow :bow_and_arrow: for 50 gold <:goldcoin:829105003129995346>");
                                     buying.push_back(bitem);
                                 }
                                 else {
                                     bitem.name("Transaction Incomplete");
-                                    bitem.value("You don't have enough gold");
+                                    bitem.value("You don't have enough gold <:goldcoin:829105003129995346>");
                                     buying.push_back(bitem);
                                 }
                             }
@@ -368,12 +368,12 @@ int main(int argc, char* argv[])
                                     std::string newA = std::to_string(oldarrows);
                                     replace(username, "arrows", newA);
                                     bitem.name("Transaction Complete");
-                                    bitem.value("Obtained a 10 arrows for 25 gold");
+                                    bitem.value("Obtained a 10 arrows <:arrow:831269918372659210> for 25 gold <:goldcoin:829105003129995346>");
                                     buying.push_back(bitem);
                                 }
                                 else {
                                     bitem.name("Transaction Incomplete");
-                                    bitem.value("You don't have enough gold");
+                                    bitem.value("You don't have enough gold <:goldcoin:829105003129995346>");
                                     buying.push_back(bitem);
                                 }
                             }
@@ -396,12 +396,12 @@ int main(int argc, char* argv[])
                                     replace(username, "gold", newG);
                                     replace(username, "armor", "yes");
                                     bitem.name("Transaction Complete");
-                                    bitem.value("Obtained a set of armor for 200 gold");
+                                    bitem.value("Obtained a set of armor <:armor:831273791535316992> for 200 gold <:goldcoin:829105003129995346>");
                                     buying.push_back(bitem);
                                 }
                                 else {
                                     bitem.name("Transaction Incomplete");
-                                    bitem.value("You don't have enough gold");
+                                    bitem.value("You don't have enough gold <:goldcoin:829105003129995346>");
                                     buying.push_back(bitem);
                                 }
                             }
@@ -424,12 +424,12 @@ int main(int argc, char* argv[])
                                     replace(username, "gold", newG);
                                     replace(username, "healthkit", "yes");
                                     bitem.name("Transaction Complete");
-                                    bitem.value("Obtained a health kit for 100 gold");
+                                    bitem.value("Obtained a health kit <:health:831276638884855878> for 100 gold <:goldcoin:829105003129995346>");
                                     buying.push_back(bitem);
                                 }
                                 else {
                                     bitem.name("Transaction Incomplete");
-                                    bitem.value("You don't have enough gold");
+                                    bitem.value("You don't have enough gold <:goldcoin:829105003129995346>");
                                     buying.push_back(bitem);
                                 }
                             }
@@ -455,12 +455,12 @@ int main(int argc, char* argv[])
                                     std::string newB = std::to_string(oldbandages);
                                     replace(username, "bandages", newB);
                                     bitem.name("Transaction Complete");
-                                    bitem.value("Obtained a 5 bandages for 50 gold");
+                                    bitem.value("Obtained a 5 bandages :adhesive_bandage: for 50 gold <:goldcoin:829105003129995346>");
                                     buying.push_back(bitem);
                                 }
                                 else {
                                     bitem.name("Transaction Incomplete");
-                                    bitem.value("You don't have enough gold");
+                                    bitem.value("You don't have enough gold <:goldcoin:829105003129995346>");
                                     buying.push_back(bitem);
                                 }
                             }
@@ -482,7 +482,7 @@ int main(int argc, char* argv[])
                                 replace(username, "gold", newG);
                                 replace(username, "sword", "no");
                                 bitem.name("Transaction Complete");
-                                bitem.value("Sold a sword for 100 gold");
+                                bitem.value("Sold a sword <:sword:831267587370909766> for 100 gold <:goldcoin:829105003129995346>");
                                 buying.push_back(bitem);
                             }
                             else {
@@ -503,7 +503,7 @@ int main(int argc, char* argv[])
                                 replace(username, "gold", newG);
                                 replace(username, "bow", "no");
                                 bitem.name("Transaction Complete");
-                                bitem.value("Sold a bow for 50 gold");
+                                bitem.value("Sold a bow :bow_and_arrow: for 50 gold <:goldcoin:829105003129995346>");
                                 buying.push_back(bitem);
                             }
                             else {
@@ -524,7 +524,7 @@ int main(int argc, char* argv[])
                                 replace(username, "gold", newG);
                                 replace(username, "armor", "no");
                                 bitem.name("Transaction Complete");
-                                bitem.value("Sold armor for 200 gold");
+                                bitem.value("Sold armor <:armor:831273791535316992> for 200 gold <:goldcoin:829105003129995346>");
                                 buying.push_back(bitem);
                             }
                             else {
@@ -545,7 +545,7 @@ int main(int argc, char* argv[])
                                 replace(username, "gold", newG);
                                 replace(username, "healthkit", "no");
                                 bitem.name("Transaction Complete");
-                                bitem.value("Sold a health kit for 100 gold");
+                                bitem.value("Sold a health kit <:health:831276638884855878> for 100 gold <:goldcoin:829105003129995346>");
                                 buying.push_back(bitem);
                             }
                             else {
@@ -569,7 +569,7 @@ int main(int argc, char* argv[])
                                 std::string newB = std::to_string(oldbandages);
                                 replace(username, "bandages", newB);
                                 bitem.name("Transaction Complete");
-                                bitem.value("Sold 5 bandages for 50 gold");
+                                bitem.value("Sold 5 bandages :adhesive_bandage: for 50 gold <:goldcoin:829105003129995346>");
                                 buying.push_back(bitem);
                             }
                             else {
@@ -593,7 +593,7 @@ int main(int argc, char* argv[])
                                 std::string newA = std::to_string(oldarrows);
                                 replace(username, "arrows", newA);
                                 bitem.name("Transaction Complete");
-                                bitem.value("Sold 10 arrows for 25 gold");
+                                bitem.value("Sold 10 arrows <:arrow:831269918372659210> for 25 gold <:goldcoin:829105003129995346>");
                                 buying.push_back(bitem);
                             }
                             else {
@@ -623,9 +623,9 @@ int main(int argc, char* argv[])
                             switch (num) {
                             case 0:
                                 esituation.name("Holy Moly");
-                                esituation.value("You found a HUGE SPIDER");
+                                esituation.value("You found a HUGE SPIDER <:spider~1:832049424963469312>");
                                 gold = rand() % 60 + 75;
-                                egold.value(fmt::format("You found {} gold!", gold));
+                                egold.value(fmt::format("You found {} gold! <:goldcoin:829105003129995346>", gold));
                                 egold.name("Gold: ");
                                 health = rand() % 10 + 40;
                                 if (parmor == "yes") {
@@ -653,9 +653,9 @@ int main(int argc, char* argv[])
                                 break;
                             case 1:
                                 esituation.name("Trolling in The Deep");
-                                esituation.value("You defeated a CAVE TROLL");
+                                esituation.value("You defeated a CAVE TROLL <:troll:832049964283723787>");
                                 gold = rand() % 25 + 50;
-                                egold.value(fmt::format("You found {} gold!", gold));
+                                egold.value(fmt::format("You found {} gold! <:goldcoin:829105003129995346>", gold));
                                 egold.name("Gold: ");
                                 health = rand() % 10 + 40;
                                 if (parmor == "yes") {
@@ -681,9 +681,9 @@ int main(int argc, char* argv[])
                                 break;
                             case 2:
                                 esituation.name("Hidden Treasure");
-                                esituation.value("You discovered a pouch of gold!");
+                                esituation.value("You discovered a pouch of gold! <:goldpouch:832050281248325672>");
                                 gold = rand() % 25 + 50;
-                                egold.value(fmt::format("You found {} gold!", gold));
+                                egold.value(fmt::format("You found {} gold! <:goldcoin:829105003129995346>", gold));
                                 egold.name("Gold: ");
                                 encounter.push_back(esituation); encounter.push_back(egold);
 
@@ -699,9 +699,9 @@ int main(int argc, char* argv[])
                                 break;
                             case 3:
                                 esituation.name("Oh No");
-                                esituation.value("You were ambushed by bandits!");
+                                esituation.value("You were ambushed by bandits! <:bandit:832051777188265995>");
                                 gold = rand() % 30 + 15;
-                                egold.value(fmt::format("You lost {} gold!", gold));
+                                egold.value(fmt::format("You lost {} gold! <:goldcoin:829105003129995346>", gold));
                                 egold.name("Gold: ");
                                 health = rand() % 10 + 40;
                                 if (parmor == "yes") {
