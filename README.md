@@ -111,7 +111,10 @@ Instructions (You will need your own bot in discord and bot token to run this co
         
         
     9. Modify the src/minimal.cpp
-
+        
+        
+        Copy our main_minimal.cpp into the minimal.cpp.
+        
 
         Replace the "TOKEN" with the your own bot token.
         
