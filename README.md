@@ -24,37 +24,101 @@ Target Technology Platform:
 
     
 Instructions (You will need your own bot in discord and bot token to run this code): 
+
+
     1. Clone the source code of Aegis.cpp down
+
+
         git clone --recursive https://github.com/zeroxs/aegis.cpp.git
+        
+        
     2. Install vcpkg
+
+
         Get into aegic.spp folder. (cd aegis.cpp).
+        
+        
         git clone https://github.com/microsoft/vcpkg
+        
+        
         .\vcpkg\bootstrap-vcpkg.bat
+        
+        
     3. Install openssl, zlib
+
+
         .\vcpkg\vcpkg.exe install openssl:x64-windows zlib:x64-windows
+        
+        
         .\vcpkg\vcpkg.exe list
+        
+        
         .\vcpkg\vcpkg.exe remove openssl zlib
+        
+        
     4. Open the folder in Visual Studio.
+
+
         There will be an error, this is ecpected.
+        
+        
     5. Edit the CMakeLists.txt's settings.
+
+
         Right click on the CMakeLists.txt and click on CMake Settings
+        
+        
         Change CMake toolchain file to a full path to vcpkg.cmake e.g.
+        
+        
         C:/Users/chusa/projects/aegis.cpp/vcpkg/scripts/buildsystems/vcpkg.cmake
+        
+        
         Add -DBUILD_EXAMPLES=1 -DCMAKE_CXX_STANDARD=17 to "CMake command arguments" under "Command arguments"
+        
+        
         Save the file. Visual Studio should start cmake generation process again.
+        
+        
         This time there should be no error.
+        
+        
     6. Edit CMakeLists.txt
+
+
         Comment line 17 and 18 out.
+        
+        
         On line 41 remove dl from the list.
+        
+        
         It is after the "Asio::Asio" and before "Threads::Threads"
+        
+        
         Save the file. Visual Studio will generate cmake again.
+        
+        
     7. Right click on CMakeLists.txt and click Build.
+    
+    
     8. Test the build.
+
+
         Go into bin/ folder and run aegis_minimal.exe in a terminal.
+        
+        
         It should "Creating websocket" and then exit.
+        
+        
     9. Modify the src/minimal.cpp
+
+
         Replace the "TOKEN" with the your own bot token.
+        
+        
         Recompile by right click on CMakeLists.txt and then select "Build"
+        
+        
         Run the ./bin/aegis_minimal.exe again this time it should not stop.
    
 
