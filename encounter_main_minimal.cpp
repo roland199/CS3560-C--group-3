@@ -976,6 +976,7 @@ int main(int argc, char* argv[])
                                 break;
 
                             /*
+                            
                                case :
                                 esituation.name("Aid in a strange place");
                                 esituation.value("You have stumbled upon 5 unused bandages! Nice!");
