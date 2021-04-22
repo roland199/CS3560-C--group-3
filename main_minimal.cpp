@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
     try
     {
         // Create bot object
-    //BOT LINE
+        aegis::core bot(aegis::create_bot_t().log_level(spdlog::level::trace).token("ODE0OTc2NzgzMDUyNTcwNjI0.YDlsRg.q8QJAKy1xBKh01_yzWhohLJ0Eoc"));
 
         // These callbacks are what the lib calls when messages come in
         bot.set_on_message_create([&](aegis::gateway::events::message_create obj)
@@ -649,8 +649,8 @@ int main(int argc, char* argv[])
 
                             
                             srand(time(0));
-                            //int num = rand() % 4;
-                            int num = 3;
+                            int num = rand() % 4;
+                            //int num = 3;
                             switch (num) {
                             case 0:
                                 esituation.name("Holy Moly");
