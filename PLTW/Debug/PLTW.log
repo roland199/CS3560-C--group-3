@@ -1,0 +1,2 @@
+﻿  main_minimal.cpp
+C:\Users\Roland\git_class\3560\group3_repo\bm_branches\main_minimal.cpp(10,10): fatal error C1083: Cannot open include file: 'aegis.hpp': No such file or directory
